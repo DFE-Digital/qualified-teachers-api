@@ -26,11 +26,15 @@ resource "cloudfoundry_service_instance" "postgres" {
 
 resource "null_resource" "migrations" {
   triggers = {
-    migrations = "${sha1(file(var.migrations_file))}"
+    #migrations = "${sha1(file(var.migrations_file))}"
+    migrations = "${timestamp()}"
   }
 
   provisioner "local-exec" {
-    command = "cf target -s ${var.paas_space} && cf conduit ${cloudfoundry_service_instance.postgres.name} -- psql -f ${var.migrations_file}"
+    command     = <<-EOT
+      cf target -s ${var.paas_space} && cf conduit ${cloudfoundry_service_instance.postgres.name} -- \
+      bash -c '(pg_dump --clean | pg_restore); psql -f ${var.migrations_file}'
+    EOT
   }
 
   depends_on = [

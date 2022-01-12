@@ -63,3 +63,8 @@ variable "migrations_file" {
 variable "statuscake_alerts" {
   type = map(any)
 }
+
+variable "clear_db" {
+  type    = bool
+  default = false
+}

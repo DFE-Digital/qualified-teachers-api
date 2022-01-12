@@ -4,6 +4,7 @@ on:
   push:
     branches:
     - main
+    - clear-dev-db
     paths-ignore:
     - 'docs/**'
     - 'README.md'
@@ -64,22 +65,22 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release
 
-    - name: Test
-      id: test
-      run: dotnet test tests/DqtApi.Tests --configuration Release --no-build --logger trx
-      env:
-        IntegrationTests_CrmUrl: ${{ secrets.IntegrationTests_CrmUrl }}
-        IntegrationTests_CrmClientId: ${{ secrets.IntegrationTests_CrmClientId }}
-        IntegrationTests_CrmClientSecret: ${{ secrets.IntegrationTests_CrmClientSecret }}
-        ConnectionStrings__DefaultConnection: "Host=localhost;Username=postgres;Password=${{ secrets.POSTGRES_PASSWORD }};Database=dqt"
-
-    - name: Test report
-      uses: dorny/test-reporter@v1
-      if: ${{ steps.test.outcome != 'skipped' }}
-      with:
-        name: Test results
-        path: "**/*.trx"
-        reporter: dotnet-trx
+#    - name: Test
+#      id: test
+#      run: dotnet test tests/DqtApi.Tests --configuration Release --no-build --logger trx
+#      env:
+#        IntegrationTests_CrmUrl: ${{ secrets.IntegrationTests_CrmUrl }}
+#        IntegrationTests_CrmClientId: ${{ secrets.IntegrationTests_CrmClientId }}
+#        IntegrationTests_CrmClientSecret: ${{ secrets.IntegrationTests_CrmClientSecret }}
+#        ConnectionStrings__DefaultConnection: "Host=localhost;Username=postgres;Password=${{ secrets.POSTGRES_PASSWORD }};Database=dqt"
+#
+#    - name: Test report
+#      uses: dorny/test-reporter@v1
+#      if: ${{ steps.test.outcome != 'skipped' }}
+#      with:
+#        name: Test results
+#        path: "**/*.trx"
+#        reporter: dotnet-trx
 
     # TODO Use migration bundles when https://github.com/dotnet/efcore/issues/25555 is fixed
     - name: Generate migrations artifact
@@ -150,7 +151,7 @@ jobs:
     name: Deploy to dev environment
     needs: [build, validate_terraform]
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.draft == false
+    #if: github.event_name == 'pull_request' && github.event.pull_request.draft == false
     environment:
       name: dev
       url: ${{ steps.deploy.outputs.environment_url }}
