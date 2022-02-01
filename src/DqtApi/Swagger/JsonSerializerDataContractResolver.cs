@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WrappedResolver = Swashbuckle.AspNetCore.SwaggerGen.JsonSerializerDataContractResolver;
 
@@ -29,7 +32,27 @@ namespace DqtApi.Swagger
                     jsonConverter: value => JsonSerializer.Serialize(value, _serializerOptions));
             }
 
-            return _innerResolver.GetDataContractForType(type);
+            var contract = _innerResolver.GetDataContractForType(type);
+
+            // Omit any URL-bound properties from the contract
+            if (type.GetProperties().Any(IsPropertyUrlBound))
+            {
+                return CreateObjectContractWithoutUrlBoundProperties();
+            }
+
+            return contract;
+
+            static bool IsPropertyUrlBound(MemberInfo property) =>
+                property.GetCustomAttribute<FromRouteAttribute>() != null || property.GetCustomAttribute<FromQueryAttribute>() != null;
+
+            DataContract CreateObjectContractWithoutUrlBoundProperties() =>
+                DataContract.ForObject(
+                    contract.UnderlyingType,
+                    contract.ObjectProperties.Where(p => !IsPropertyUrlBound(p.MemberInfo)),
+                    contract.ObjectExtensionDataType,
+                    contract.ObjectTypeNameProperty,
+                    contract.ObjectTypeNameValue,
+                    contract.JsonConverter);
         }
     }
 }
