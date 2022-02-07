@@ -1,3 +1,4 @@
+#Requires -Version 7.0
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)]
@@ -53,11 +54,11 @@ Function ConvertTo-OrderedDictionary {
 <#
 .SYNOPSIS
     Converts a HashTable, Array, or an OrderedDictionary to an OrderedDictionary.
- 
+
 .DESCRIPTION
     ConvertTo-OrderedDictionary takes a HashTable, Array, or an OrderedDictionary
     and returns an ordered dictionary.
- 
+
     If you enter a hash table, the keys in the hash table are ordered
     alphanumerically in the dictionary. If you enter an array, the keys
     are integers 0 - n.
@@ -74,11 +75,11 @@ Function ConvertTo-OrderedDictionary {
 .NOTES
     source: https://gallery.technet.microsoft.com/scriptcenter/ConvertTo-OrderedDictionary-cf2404ba
     converted to function and added ability to copy OrderedDictionary
- 
+
 .EXAMPLE
     PS C:\> $myHash = @{a=1; b=2; c=3}
     PS C:\> .\ConvertTo-OrderedDictionary.ps1 -Hash $myHash
- 
+
     Name Value
     ---- -----
     a 1
@@ -88,23 +89,23 @@ Function ConvertTo-OrderedDictionary {
     PS C:\> $myHash = @{a=1; b=2; c=3}
     PS C:\> $myHash = .\ConvertTo-OrderedDictionary.ps1 -Hash $myHash
     PS C:\> $myHash
- 
+
     Name Value
     ---- -----
     a 1
     b 2
     c 3
- 
+
     PS C:\> $myHash | Get-Member
- 
+
        TypeName: System.Collections.Specialized.OrderedDictionary
        . . .
- 
+
 .EXAMPLE
     PS C:\> $colors = "red", "green", "blue"
     PS C:\> $colors = .\ConvertTo-OrderedDictionary.ps1 -Hash $colors
     PS C:\> $colors
- 
+
     Name Value
     ---- -----
     0 red
