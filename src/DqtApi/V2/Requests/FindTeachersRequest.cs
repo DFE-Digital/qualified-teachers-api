@@ -32,7 +32,9 @@ namespace DqtApi.V2.Requests
         [FromQuery(Name = "previousLastName")]
         public string PreviousLastName { get; set; }
 
-        [FromQuery(Name = "dateOfBirth"), SwaggerParameter(Description = "dob of person"),ModelBinder(typeof(ModelBinding.DateModelBinder))]
+        [FromQuery(Name = "dateOfBirth")]
+        [SwaggerParameter(Description = "Date of birth of person")]
+        [ModelBinder(typeof(ModelBinding.DateModelBinder))]
         public DateOnly? DateOfBirth { get; set; }
 
         [SwaggerParameter(Description = "National insurance number of person")]

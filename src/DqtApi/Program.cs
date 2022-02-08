@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Security.Claims;
 using AspNetCoreRateLimit;
 using AspNetCoreRateLimit.Redis;
@@ -44,6 +45,8 @@ namespace DqtApi
     {
         public static void Main(string[] args)
         {
+            TypeDescriptor.AddAttributes(typeof(DateOnly), new TypeConverterAttribute(typeof(DateOnlyTypeConverter)));
+
             var builder = WebApplication.CreateBuilder(args);
 
             var services = builder.Services;
