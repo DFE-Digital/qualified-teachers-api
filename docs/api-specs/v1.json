@@ -304,6 +304,40 @@
             "format": "date-time",
             "nullable": true,
             "readOnly": true
+          },
+          "he_qualification_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "he_subject1": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "he_subject2": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "he_subject3": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "he_subject1_code": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "he_subject2_code": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "he_subject3_code": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
